@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © 2016 Antonio Espinosa - <antonio.espinosa@tecnativa.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<openerp>
+<data>
+
+<!--
+- List of menus: website.menu
+    - Tree: name, URI, published (line color)
+    - Filtrar/agrupar por website
+    - Filtrar/agrupar por theme
+-->
+<!--
+<record id="view_website_menu_tree" model="ir.ui.view">
+    <field name="name">website.menu.tree</field>
+    <field name="model">website.menu</field>
+    <field name="arch" type="xml">
+        <tree string="Website Menus">
+            <field name="website_id"/>
+            <field name="name"/>
+            <field name="url"/>
+            <field name="new_window"/>
+            <field name="parent_id"/>
+            <field name="sequence"/>
+            <field name="published"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_website_menu_form" model="ir.ui.view">
+    <field name="name">website.menu.form</field>
+    <field name="model">website.menu</field>
+    <field name="arch" type="xml">
+        <form string="Website menu">
+            <sheet>
+                <div class="oe_right oe_button_box" name="buttons">
+                </div>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="url"/>
+                        <field name="new_window"/>
+                        <field name="sequence"/>
+                    </group>
+                    <group>
+                        <field name="parent_id"/>
+                        <field name="website_id"/>
+                        <field name="published"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+-->
+
+<record id="view_website_menu_search" model="ir.ui.view">
+    <field name="name">website.menu.search</field>
+    <field name="model">website.menu</field>
+    <field name="arch" type="xml">
+        <search string="Search Website menu">
+            <field name="name"/>
+            <field name="url"/>
+            <field name="website_id"/>
+            <group expand="0" string="Group By">
+                <filter name="group_by_website_id" string="Website" context="{'group_by':'website_id'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+
+<record id="action_website_menu_tree" model="ir.actions.act_window">
+    <field name="name">Website Menu</field>
+    <field name="res_model">website.menu</field>
+    <field name="view_mode">list</field>
+    <field name="context">{'search_default_group_by_website_id': 1}</field>
+    <field name="search_view_id" ref="view_website_menu_search"/>
+</record>
+
+<!--
+- List of multi layouts: ir.ui.view.multi
+    - Filtrar/agrupar por website
+    - Filtrar/agrupar por theme
+-->
+
+<record id="view_website_multi_layout_tree" model="ir.ui.view">
+    <field name="name">website.multi.layout.tree</field>
+    <field name="model">ir.ui.view.multi</field>
+    <field name="arch" type="xml">
+        <tree string="Website Multi-layouts">
+            <field name="inherit_id"/>
+            <field name="view_id"/>
+            <field name="website_id"/>
+            <field name="theme_id"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_website_multi_layout_form" model="ir.ui.view">
+    <field name="name">website.multi.layout.form</field>
+    <field name="model">ir.ui.view.multi</field>
+    <field name="arch" type="xml">
+        <form string="Website layout">
+            <sheet>
+                <div class="oe_right oe_button_box" name="buttons">
+                </div>
+                <group>
+                    <group>
+                        <field name="inherit_id"/>
+                        <field name="view_id"/>
+                    </group>
+                    <group>
+                        <field name="website_id"/>
+                        <field name="theme_id"/>
+                        <field name="active"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_website_multi_layout_search" model="ir.ui.view">
+    <field name="name">website.multi.layout.search</field>
+    <field name="model">ir.ui.view.multi</field>
+    <field name="arch" type="xml">
+        <search string="Search Website Multi-layout">
+            <field name="inherit_id"/>
+            <field name="view_id"/>
+            <field name="website_id"/>
+            <field name="theme_id"/>
+            <group expand="0" string="Group By">
+                <filter name="group_by_website_id" string="Website" context="{'group_by':'website_id'}"/>
+                <filter name="group_by_theme_id" string="Theme" context="{'group_by':'theme_id'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+
+<record id="action_website_multi_layout_tree" model="ir.actions.act_window">
+    <field name="name">Website Multi-layouts</field>
+    <field name="res_model">ir.ui.view.multi</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_website_multi_layout_tree"/>
+    <field name="context">{'search_default_group_by_website_id': 1}</field>
+    <field name="search_view_id" ref="view_website_multi_layout_search"/>
+</record>
+
+
+<!--
+- List of layouts: ir.ui.view, layout=True
+    - Filtrar/agrupar por website
+    - Filtrar/agrupar por theme
+-->
+
+<record id="view_website_layout_tree" model="ir.ui.view">
+    <field name="name">website.layout.tree</field>
+    <field name="model">ir.ui.view</field>
+    <field name="arch" type="xml">
+        <tree string="Website Layouts">
+            <field name="priority" string="Sequence"/>
+            <field name="name"/>
+            <field name="website_id"/>
+            <field name="theme_id"/>
+            <field name="xml_id"/>
+            <field name="key"/>
+            <field name="inherit_id"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_website_layout_form" model="ir.ui.view">
+    <field name="name">website.layout.form</field>
+    <field name="model">ir.ui.view</field>
+    <field name="arch" type="xml">
+        <form string="Website layout">
+            <sheet>
+                <div class="oe_right oe_button_box" name="buttons">
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="multi_layout_button"
+                        icon="fa-sitemap"
+                        name="%(website_multi.action_website_multi_layout_tree)d"
+                        context="{'search_default_view_id': active_id, 'default_view_id': active_id}">
+                        <div>
+                        <!--
+                        <strong><field name="multi_layout_count"/></strong><br/>
+                        -->
+                        Multi-inherit layouts</div>
+                    </button>
+                </div>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="type" invisible="1"/>
+                        <field name="model" invisible="1"/>
+                        <field name="website_id"/>
+                        <field name="theme_id"/>
+                        <field name="key"/>
+                        <field name="priority"/>
+                    </group>
+                    <group>
+                        <field name="field_parent" invisible="1"/>
+                        <field name="inherit_id"/>
+                        <field name="mode"/>
+                        <field name="model_data_id"/>
+                        <field name="xml_id"/>
+                        <field name="active"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Architecture">
+                        <field name="arch"/>
+                    </page>
+                    <page string="Groups">
+                        <field name="groups_id"/>
+                    </page>
+                    <page name="inherit_children" string="Inherited Views">
+                        <field name="inherit_children_ids"
+                               context="{'default_model':model, 'default_type':type, 'default_inherit_id':active_id}">
+                            <tree>
+                                <field name="priority"/>
+                                <field name="name"/>
+                                <field name="xml_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_website_layout_search" model="ir.ui.view">
+    <field name="name">website.layout.search</field>
+    <field name="model">ir.ui.view</field>
+    <field name="arch" type="xml">
+        <search string="Search Website Layout">
+            <field name="name"/>
+            <field name="key"/>
+            <field name="website_id"/>
+            <field name="theme_id"/>
+        </search>
+    </field>
+</record>
+
+
+<record id="action_website_layout_tree" model="ir.actions.act_window">
+    <field name="name">Website layouts</field>
+    <field name="res_model">ir.ui.view</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('is_layout', '=', True)]</field>
+    <field name="context">{'default_type': 'qweb'}</field>
+    <field name="view_id" ref="view_website_layout_tree"/>
+    <field name="search_view_id" ref="view_website_layout_search"/>
+</record>
+
+
+<!--
+- List of pages: ir.ui.view, page=True
+    - Filtrar/agrupar por website
+    - Filtrar/agrupar por theme
+-->
+
+<record id="view_website_page_tree" model="ir.ui.view">
+    <field name="name">website.page.tree</field>
+    <field name="model">ir.ui.view</field>
+    <field name="arch" type="xml">
+        <tree string="Website Pages">
+            <field name="priority" string="Sequence"/>
+            <field name="name"/>
+            <field name="website_id"/>
+            <field name="theme_id"/>
+            <field name="xml_id"/>
+            <field name="key"/>
+            <field name="inherit_id"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_website_page_form" model="ir.ui.view">
+    <field name="name">website.page.form</field>
+    <field name="model">ir.ui.view</field>
+    <field name="arch" type="xml">
+        <form string="Website page">
+            <sheet>
+                <div class="oe_right oe_button_box" name="buttons">
+                </div>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="type" invisible="1"/>
+                        <field name="model" invisible="1"/>
+                        <field name="website_id"/>
+                        <field name="theme_id"/>
+                        <field name="key"/>
+                        <field name="priority"/>
+                    </group>
+                    <group>
+                        <field name="field_parent" invisible="1"/>
+                        <field name="inherit_id"/>
+                        <field name="mode"/>
+                        <field name="model_data_id"/>
+                        <field name="xml_id"/>
+                        <field name="active"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page string="Architecture">
+                        <field name="arch"/>
+                    </page>
+                    <page string="Groups">
+                        <field name="groups_id"/>
+                    </page>
+                    <page name="inherit_children" string="Inherited Views">
+                        <field name="inherit_children_ids"
+                               context="{'default_model':model, 'default_type':type, 'default_inherit_id':active_id}">
+                            <tree>
+                                <field name="priority"/>
+                                <field name="name"/>
+                                <field name="xml_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_website_page_search" model="ir.ui.view">
+    <field name="name">website.page.search</field>
+    <field name="model">ir.ui.view</field>
+    <field name="arch" type="xml">
+        <search string="Search Website Page">
+            <field name="name"/>
+            <field name="key"/>
+            <field name="website_id"/>
+            <field name="theme_id"/>
+        </search>
+    </field>
+</record>
+
+
+<record id="action_website_page_tree" model="ir.actions.act_window">
+    <field name="name">Website pages</field>
+    <field name="res_model">ir.ui.view</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('page', '=', True)]</field>
+    <field name="context">{'default_type': 'qweb'}</field>
+    <field name="view_id" ref="view_website_page_tree"/>
+    <field name="search_view_id" ref="view_website_page_search"/>
+</record>
+
+
+<!--
+- List of websites: website
+    - Tree: name, theme, # menus, # pages, # layouts
+    - Form: # menus (smart button), # pages (smart button), # layouts (smart button)
+-->
+
+<record id="view_website_tree" model="ir.ui.view">
+    <field name="name">website.tree</field>
+    <field name="model">website</field>
+    <field name="arch" type="xml">
+        <tree string="Websites">
+            <field name="name"/>
+            <field name="theme_id"/>
+            <field name="partner_id"/>
+            <!--
+            <field name="page_count"/>
+            <field name="menu_count"/>
+            -->
+        </tree>
+    </field>
+</record>
+
+<record id="view_website_form" model="ir.ui.view">
+    <field name="name">website.form</field>
+    <field name="model">website</field>
+    <field name="arch" type="xml">
+        <form string="Website">
+            <sheet>
+                <!--
+                <div class="oe_right oe_button_box" name="buttons">
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="menu_button"
+                        icon="fa-sitemap"
+                        name="%(website_multi.action_website_menu_tree)d"
+                        context="{'search_default_website_id': active_id,'default_website_id': active_id}">
+                        <div><strong>
+                            <field name="menu_count" widget="monetary"/>
+                        </strong><br/>Menus</div>
+                    </button>
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="page_button"
+                        icon="fa-sitemap"
+                        name="%(website_multi.action_website_page_tree)d"
+                        context="{'search_default_website_id': active_id, 'default_website_id': active_id}">
+                        <div><strong>
+                            <field name="page_count" widget="monetary"/>
+                        </strong><br/>Pages</div>
+                    </button>
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="layout_button"
+                        icon="fa-sitemap"
+                        name="%(website_multi.action_website_layout_tree)d"
+                        context="{'search_default_website_id': active_id,'default_website_id': active_id}">
+                        <div><strong>
+                            <field name="layout_count"/>
+                        </strong><br/>Layouts</div>
+                    </button>
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="inherit_layout_button"
+                        icon="fa-sitemap"
+                        name="%(website_multi.action_website_multi_layout_tree)d"
+                        context="{'search_default_website_id': active_id,'default_website_id': active_id}">
+                        <div><strong>
+                            <field name="inherit_layout_count"/>
+                        </strong><br/>Inherit layouts</div>
+                    </button>
+                </div>
+                -->
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="theme_id"/>
+                        <field name="google_analytics_key"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                    <group>
+                        <field name="social_twitter" placeholder="https://twitter.com/odooapps"/>
+                        <field name="social_facebook" placeholder="https://facebook.com/odoo"/>
+                        <field name="social_googleplus" placeholder="https://plus.google.com/+Odooapps"/>
+                        <field name="social_linkedin" placeholder="http://www.linkedin.com/company/odoo"/>
+                        <field name="social_youtube" placeholder="https://www.youtube.com/channel/UCkQPikELWZFLgQNHd73jkdg"/>
+                        <field name="social_github" placeholder="https://youraccount.github.io"/>
+                    </group>
+                </group>
+                <group string="Languages">
+                    <group>
+                        <field name="language_ids" widget="many2many_checkboxes"/>
+                    </group>
+                    <group>
+                        <field name="default_lang_id" widget="selection"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_website_search" model="ir.ui.view">
+    <field name="name">website.search</field>
+    <field name="model">website</field>
+    <field name="arch" type="xml">
+        <search string="Search Website">
+            <field name="name"/>
+            <field name="theme_id"/>
+        </search>
+    </field>
+</record>
+
+
+<record id="action_website_tree" model="ir.actions.act_window">
+    <field name="name">Websites</field>
+    <field name="res_model">website</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_website_tree"/>
+    <field name="search_view_id" ref="view_website_search"/>
+</record>
+
+<!--
+
+- List of themes: website.theme
+    - Tree: name, css_class, # websites
+    - Form: # websites (smart button)
+-->
+
+<record id="view_website_theme_tree" model="ir.ui.view">
+    <field name="name">website.theme.tree</field>
+    <field name="model">website.theme</field>
+    <field name="arch" type="xml">
+        <tree string="Websites themes">
+            <field name="name"/>
+            <field name="css_class"/>
+            <field name="website_count"/>
+        </tree>
+    </field>
+</record>
+
+<record id="view_website_theme_form" model="ir.ui.view">
+    <field name="name">website.theme.form</field>
+    <field name="model">website.theme</field>
+    <field name="arch" type="xml">
+        <form string="Website theme">
+            <sheet>
+                <div class="oe_right oe_button_box" name="buttons">
+                    <button type="action"
+                        class="oe_stat_button"
+                        id="website_button"
+                        icon="fa-sitemap"
+                        name="%(website_multi.action_website_tree)d"
+                        context="{'search_default_theme_id': active_id,'default_theme_id': active_id}">
+                        <div><strong>
+                            <field name="website_count" widget="monetary"/>
+                        </strong><br/>Websites</div>
+                    </button>
+                </div>
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="css_class"/>
+                    </group>
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="view_website_theme_search" model="ir.ui.view">
+    <field name="name">website.theme.search</field>
+    <field name="model">website.theme</field>
+    <field name="arch" type="xml">
+        <search string="Search Website Theme">
+            <field name="name"/>
+            <field name="css_class"/>
+        </search>
+    </field>
+</record>
+
+
+<record id="action_website_theme_tree" model="ir.actions.act_window">
+    <field name="name">Website themes</field>
+    <field name="res_model">website.theme</field>
+    <field name="view_type">form</field>
+    <field name="view_mode">tree,form</field>
+    <field name="view_id" ref="view_website_theme_tree"/>
+    <field name="search_view_id" ref="view_website_theme_search"/>
+</record>
+
+<record id="menu_website_admin" model="ir.ui.menu">
+    <field name="name">Website Admin</field>
+    <field name="sequence" eval="400"/>
+    <field eval="[(6,0,[ref('base.group_website_designer')])]" name="groups_id"/>
+</record>
+
+
+<menuitem id="menu_website_admin_theme" name="Themes"
+          parent="menu_website_admin" sequence="10" />
+<menuitem id="menu_website_admin_theme_theme" name="Themes"
+          action="action_website_theme_tree" parent="menu_website_admin_theme"/>
+
+
+<menuitem id="menu_website_admin_website" name="Websites"
+          parent="menu_website_admin" sequence="20" />
+<menuitem id="menu_website_admin_website_website" name="Websites"
+          action="action_website_tree" parent="menu_website_admin_website"/>
+
+
+<menuitem id="menu_website_admin_content" name="Content"
+          parent="menu_website_admin" sequence="30" />
+<menuitem id="menu_website_admin_content_menu" sequence="10" name="Menus"
+          action="action_website_menu_tree" parent="menu_website_admin_content"/>
+<menuitem id="menu_website_admin_content_page" sequence="20" name="Pages"
+          action="action_website_page_tree" parent="menu_website_admin_content"/>
+<menuitem id="menu_website_admin_content_layout" sequence="30" name="Layouts"
+          action="action_website_layout_tree" parent="menu_website_admin_content"/>
+<menuitem id="menu_website_admin_content_multi_layout" sequence="40" name="Multi-inherit layouts"
+          action="action_website_multi_layout_tree" parent="menu_website_admin_content"/>
+
+<record id="action_website_page_tree_view1" model="ir.actions.act_window.view">
+    <field eval="1" name="sequence"/>
+    <field name="view_mode">tree</field>
+    <field name="act_window_id" ref="action_website_page_tree"/>
+</record>
+
+<record id="action_website_page_tree_view2" model="ir.actions.act_window.view">
+    <field eval="2" name="sequence"/>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_website_page_form"/>
+    <field name="act_window_id" ref="action_website_page_tree"/>
+</record>
+
+<record id="action_website_layout_tree_view1" model="ir.actions.act_window.view">
+    <field eval="1" name="sequence"/>
+    <field name="view_mode">tree</field>
+    <field name="act_window_id" ref="action_website_layout_tree"/>
+</record>
+
+<record id="action_website_layout_tree_view2" model="ir.actions.act_window.view">
+    <field eval="2" name="sequence"/>
+    <field name="view_mode">form</field>
+    <field name="view_id" ref="view_website_layout_form"/>
+    <field name="act_window_id" ref="action_website_layout_tree"/>
+</record>
+
+</data>
+</openerp>

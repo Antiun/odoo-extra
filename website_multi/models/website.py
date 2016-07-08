@@ -40,7 +40,15 @@ class website(orm.Model):
             store={
                 'website.menu': (_get_menu_website, ['sequence', 'parent_id', 'website_id'], 10)
             }
-        )
+        ),
+        'theme_id': fields.many2one('website.theme', string="Theme"),
+        'css_class': fields.related(
+            'theme_id', 'css_class', type='char', string="CSS class",
+            readonly=True),
+        # menu_count
+        # page_count
+        # layout_count
+        # inherit_layout_count
     }
 
     _defaults = {

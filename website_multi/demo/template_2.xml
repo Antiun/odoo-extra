@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    	<!-- Different homepage for website Alt /!\ key should be the same as other homepage -->
+   	  	<record id="website_alt_homepage_template" model="ir.ui.view">
+           <field name="name">Homepage (Alt)</field>
+           <field name="type">qweb</field>
+           <field name="page" eval="True" />
+
+           <field name="website_id" ref="website_alt" />
+           <field name="key">website.homepage</field>
+
+           <field name="arch" type="xml">
+               <t name="Homepage" priority="29" t-name="website.homepage">
+				  <t t-call="website.layout">
+				    <div id="wrap" class="oe_structure oe_empty">
+				      <section class="oe_dark mt16 mb16">
+				        <div class="container">
+				          <div class="row">
+				            <div class="col-md-12 text-center mt32 mb32">
+				              <h2>Website Alt is so cool</h2>
+				            </div>
+				            <div class="col-md-12">
+				              <img class="img img-responsive" src="/website/static/src/img/desert.jpg" style="margin: 0 auto;"/>
+				            </div>
+				            <div class="col-md-6 col-md-offset-3 mb16 mt16">
+				              <p class="text-center">
+				                <b>A Small Subtitle</b>
+				              </p>
+				              <p class="text-center">Choose a vibrant image and write an inspiring paragraph about it. It does not have to be long, but it should reinforce your image.</p>
+				              <p class="text-center">
+				                <a href="/page/website.contactus">Contact us »</a>
+				              </p>
+				            </div>
+				          </div>
+				        </div>
+				      </section>
+				    </div>
+				  </t>
+				</t>
+           </field>
+        </record>
+
+
+        <!--new page for website 127.0.0.1 /!\ key should be the end of url specify in the menu -->
+        <!-- key should be equal to t-name -->
+        <record id="website_alt_other_template" model="ir.ui.view">
+           <field name="name">New page for Alt</field>
+           <field name="type">qweb</field>
+           <field name="page" eval="True" />
+
+           <field name="website_id" ref="website_alt" />
+           <field name="key">website.other-alt-page</field>
+
+           <field name="arch" type="xml">
+            <t t-name="website.other-alt-page">
+				<t t-call="website.layout">
+					<div id="wrap" class="oe_structure oe_empty"/>
+					<div><h1>Other page on Alt</h1></div>
+					<div id="wrap" class="oe_structure oe_empty"/>
+				</t>
+			</t>
+
+           </field>
+        </record>
+<!--
+        <delete id="website.footer_default" model="ir.ui.view"/>
+-->
+        <record id="website_alt_footer_default" model="ir.ui.view">
+            <field name="name">Footer default for Alt</field>
+            <field name="type">qweb</field>
+
+            <field name="page" eval="False" />
+
+            <field name="website_id" ref="website_alt" />
+            <field name="key">website.footer_default</field>
+ 		   <field name="inherit_id" ref="website.footer_default" />
+            <field name="arch" type="xml">
+            <data inherit_id="website.footer_default" name="Footer">
+                <xpath expr="//div[@class='container hidden-print']" position="attributes">
+                    <attribute name="id">footer</attribute>
+                </xpath>
+            </data>
+           </field>
+        </record>
+
+       <record id="website_alt_footer_custom" model="ir.ui.view">
+           <field name="name">Footer custom for Alt</field>
+           <field name="type">qweb</field>
+
+           <field name="page" eval="False" />
+
+           <field name="website_id" ref="website_alt" />
+           <field name="key">website.footer_custom</field>
+		   <field name="inherit_id" ref="website.footer_custom" />
+           <field name="arch" type="xml">
+           <data inherit_id="website.footer_custom" name="Footer">
+			    <xpath expr="//div[@id='footer']" position="replace">
+			        <div class="oe_structure" id="footer">
+			            <section data-snippet-id="three-columns">
+			                <div class="container">
+			                    <div class="row">
+			                        <div class="col-md-4">
+			                            <h4 class="mt16">Subtitle</h4>
+			                            <p>
+			                                <a href="/">Homepage</a>
+			                            </p>
+			                        </div>
+			                        <div class="col-md-4">
+			                            <h4 class="mt16">Some Stuff for Alt</h4>
+			                            <p>
+			                                ...
+			                            </p>
+			                        </div>
+			                        <div class="col-md-4">
+			                            <h4 class="mt16">Contact editor of Alt</h4>
+			                            <p>
+			                                ...
+			                            </p>
+			                        </div>
+			                    </div>
+			                </div>
+			            </section>
+			        </div>
+			    </xpath>
+			</data>
+           </field>
+        </record>
+
+    </data>
+</openerp>

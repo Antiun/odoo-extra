@@ -40,8 +40,8 @@
 				</t>
            </field>
         </record>
-        
-        
+
+
         <!--new page for website 127.0.0.1 /!\ key should be the end of url specify in the menu -->
         <!-- key should be equal to t-name -->
         <record id="website_ip_other_template" model="ir.ui.view">
@@ -63,13 +63,13 @@
 
            </field>
         </record>
-        
+
         <!--Change Layout -->
         <!-- Page should be False for layout template -->
         <record id="website_ip_layout" model="ir.ui.view">
            <field name="name">Main Layout for 127.0.0.1</field>
            <field name="type">qweb</field>
-           
+
            <field name="page" eval="False" />
 
            <field name="website_id" ref="website_ip" />
@@ -89,22 +89,22 @@
 			            <t t-if="not title">
 			                <t t-set="title"><t t-if="additional_title"><t t-raw="additional_title"/> | </t><t t-esc="(website or res_company).name"/></t>
 			            </t>
-			
+
 			            <meta name="viewport" content="initial-scale=1"/>
 			            <meta name="description" t-att-content="main_object and 'website_meta_description' in main_object                 and main_object.website_meta_description or website_meta_description"/>
 			            <meta name="keywords" t-att-content="main_object and 'website_meta_keywords' in main_object                 and main_object.website_meta_keywords or website_meta_keywords"/>
 			            <title><t t-esc="title"/></title>
-			
+
 			            <t t-set="languages" t-value="website.get_languages() if website else None"/>
 			            <t t-if="request and request.website_multilang and website">
 			                <t t-foreach="website.get_alternate_languages(request.httprequest)" t-as="lang">
 			                    <link rel="alternate" t-att-hreflang="lang['hreflang']" t-att-href="lang['href']"/>
 			                </t>
 			            </t>
-			
+
 			            <t t-call-assets="web.assets_common" t-js="false"/>
 			            <t t-call-assets="website.assets_frontend" t-js="false"/>
-			
+
 			            <t t-raw="head or ''" name="layout_head"/>
 			        </head>
 			        <body>
@@ -155,9 +155,9 @@
 			                    	<h2> New stuff under the footer</h2>
 			                    </div>
 			                </footer>
-			                
+
 			            </div>
-			
+
 			            <t t-call-assets="web.assets_common" t-css="false"/>
 			            <t t-call-assets="website.assets_frontend" t-css="false"/>
 			            <script t-if="website and website.google_analytics_key">
@@ -165,7 +165,7 @@
 			                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 			                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 			                })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-			
+
 			                ga('create', _.str.trim('<t t-esc="website.google_analytics_key"/>'), 'auto');
 			                ga('send','pageview');
 			            </script>
@@ -175,12 +175,37 @@
 
            </field>
         </record>
-        
+
+        <record id="user_navbar_multi" model="ir.ui.view.multi">
+            <field name="inherit_id" ref="website_ip_layout"/>
+            <field name="view_id" ref="website.user_navbar"/>
+            <field name="website_id" ref="website_ip" />
+        </record>
+        <record id="editor_head_multi" model="ir.ui.view.multi">
+            <field name="inherit_id" ref="website_ip_layout"/>
+            <field name="view_id" ref="website.editor_head"/>
+            <field name="website_id" ref="website_ip" />
+        </record>
+        <!--
+        <record id="website.editor_head" model="ir.ui.view">
+            <field name="multi_inherit_ids" eval="[(4, ref('website_ip_layout'))]"/>
+        </record>
+        -->
+        <!--
+        <template id="editor_head" inherit_id="website_ip_layout" name="Editor" grops="base.group_website_publisher,base.group_website_designer">
+            <xpath expr='//t[@t-call-assets="website.assets_frontend"][@t-js]' position="after">
+                <t t-call-assets="website.assets_editor" t-js="false"/>
+            </xpath>
+            <xpath expr='//t[@t-call-assets="website.assets_frontend"][@t-css]' position="after">
+                <t t-call-assets="website.assets_editor" t-css="false"/>
+            </xpath>
+        </template>
+        -->
        <!--Add footer, since we change the layout, we lost all the inherited view of the layout from localhost -->
        <record id="website_ip_footer" model="ir.ui.view">
            <field name="name">Main Layout for 127.0.0.1</field>
            <field name="type">qweb</field>
-           
+
            <field name="page" eval="False" />
 
            <field name="website_id" ref="website_ip" />
@@ -219,6 +244,86 @@
 			</data>
            </field>
         </record>
+
+        <!-- Front-end/Back-end integration -->
+        <!--
+        <template id="user_navbar" inherit_id="website_ip_layout" groups="base.group_user">
+        <xpath expr="//body/div['id=wrawrap']" position="before">
+        <t t-if="website and menu_data">
+            <nav id="oe_main_menu_navbar" class="navbar navbar-inverse" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#oe_applications">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <ul id="oe_applications" class="nav navbar-nav navbar-left navbar-collapse collapse">
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle hidden-xs" data-toggle="dropdown"><i class="fa fa-th-large"></i> Website<b class="caret"/></a>
+                        <ul class="dropdown-menu">
+                            <li t-foreach="menu_data['children']" t-as="menu">
+                                <t t-call="web.menu_link"/>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <ul id="oe_editzone" class="nav navbar-nav hidden-xs" style="padding-left: 20px; display: none;" groups="base.group_website_publisher">
+                    <li><button type="button" data-action="edit" class="btn btn-primary btn-xs">Edit</button></li>
+                </ul>
+
+                <ul id="oe_systray" class="nav navbar-nav navbar-right pull-right hidden-xs">
+                    <li>
+                        <a data-action="show-mobile-preview" href="#">
+                            <span title="Mobile preview"><i class="fa fa-mobile"/></span>
+                        </a>
+                    </li>
+
+                    <li groups="base.group_website_designer">
+                        <a data-action="promote-current-page" href="#">
+                            <span title="Promote page on the web">Promote</span>
+                        </a>
+                    </li>
+
+                    <li class="dropdown" groups="base.group_website_publisher">
+                        <a id="content-menu-button" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Content <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu oe_content_menu" role="menu">
+                            <li groups="base.group_website_designer"><a data-action="edit_menu" href="#"><span title="Edit Top Menu">Edit Menu</span></a></li>
+                            <li class="divider" groups="base.group_website_designer"> </li>
+                            <li groups="base.group_website_designer"><a href="#" data-action="new_page">New Page</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" id="customize-menu" groups="base.group_website_designer">
+                        <a id="customize-menu-button" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Customize <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#advanced-view-editor" data-action='ace'>HTML Editor</a></li>
+                            <li><a href="/page/website.themes">Change Theme</a></li>
+                            <li><a href="/web#return_label=Website&amp;action=website.action_module_website">Install Apps</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a id="help-menu-button" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Help <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu" id="help-menu">
+                            <li class="dropdown-header">HELP &amp; TUTORIALS</li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </t>
+        </xpath>
+        </template>
+        -->
+
     </data>
 </openerp>
-    

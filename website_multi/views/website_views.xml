@@ -15,6 +15,7 @@
                 <xpath expr="//header" position="replace"></xpath>
                 <xpath expr="//field[@name='name']" position="after">
                     <field name="menu_id"/>
+                    <field name="theme_id"/>
                     <field name="user_id" context="{ 'active_test' : False }" />
                 </xpath>
                 <xpath expr="//field[@name='default_lang_id']" position="attributes">
@@ -82,6 +83,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position="before">
                     <field name="website_id"/>
+                    <field name="published"/>
                 </xpath>
             </field>
         </record>
